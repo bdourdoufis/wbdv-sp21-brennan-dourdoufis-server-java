@@ -14,9 +14,7 @@ public class Widget {
     private String style;
     private String value;
 
-    public Widget() {
-
-    }
+    public Widget() {}
 
     public Widget(Widget other) {
         this.name = other.getName();
