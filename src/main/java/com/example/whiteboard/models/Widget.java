@@ -1,19 +1,8 @@
 package com.example.whiteboard.models;
 
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
-
-@Entity
 public class Widget {
-
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private int id;
-
     private String name;
-    private String topicId;
+    private String id;
     private String type;
     private int widgetOrder;
     private String text;
@@ -24,9 +13,39 @@ public class Widget {
     private String cssClass;
     private String style;
     private String value;
-    private boolean ordered;
 
     public Widget() {}
+
+    public Widget(Widget other) {
+        this.name = other.getName();
+        this.id = other.getId();
+        this.type = other.getType();
+        this.widgetOrder = other.getWidgetOrder();
+        this.text = other.getText();
+        this.url = other.getUrl();
+        this.size = other.getSize();
+        this.width = other.getWidth();
+        this.height = other.getHeight();
+        this.cssClass = other.getCssClass();
+        this.style = other.getStyle();
+        this.value = other.getValue();
+    }
+
+    public Widget(String name, String id, String type, int widgetOrder, String text, String url, int size, int width,
+                  int height, String cssClass, String style, String value) {
+        this.name = name;
+        this.id = id;
+        this.type = type;
+        this.widgetOrder = widgetOrder;
+        this.text = text;
+        this.url = url;
+        this.size = size;
+        this.width = width;
+        this.height = height;
+        this.cssClass = cssClass;
+        this.style = style;
+        this.value = value;
+    }
 
     public String getName() {
         return name;
@@ -36,11 +55,11 @@ public class Widget {
         this.name = name;
     }
 
-    public int getId() {
+    public String getId() {
         return id;
     }
 
-    public void setId(int id) {
+    public void setId(String id) {
         this.id = id;
     }
 
@@ -122,21 +141,5 @@ public class Widget {
 
     public void setValue(String value) {
         this.value = value;
-    }
-
-    public String getTopicId() {
-        return topicId;
-    }
-
-    public void setTopicId(String topicId) {
-        this.topicId = topicId;
-    }
-
-    public boolean isOrdered() {
-        return ordered;
-    }
-
-    public void setOrdered(boolean ordered) {
-        this.ordered = ordered;
     }
 }

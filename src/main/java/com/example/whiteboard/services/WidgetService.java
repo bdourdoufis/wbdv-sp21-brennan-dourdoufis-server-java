@@ -1,52 +1,55 @@
 package com.example.whiteboard.services;
 import com.example.whiteboard.models.Widget;
-import com.example.whiteboard.repositories.WidgetRepository;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-
+import java.util.ArrayList;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 
 @Service
 public class WidgetService {
+    private HashMap<String, List<Widget>> topicWidgetMap;
 
-    @Autowired
-    private WidgetRepository repository;
-
-    public WidgetService() {}
+    public WidgetService() {
+        topicWidgetMap = new HashMap<>();
+    }
 
     public Widget createWidget(String tid, Widget widget) {
-        widget.setTopicId(tid);
-        return repository.save(widget);
+        String id = (new Date()).getTime() + "";
+        widget.setId(id);
+        if (!topicWidgetMap.containsKey(tid)) {
+            topicWidgetMap.put(tid, new ArrayList<>());
+        }
+        topicWidgetMap.get(tid).add(widget);
+        return widget;
     }
 
     public List<Widget> findWidgetsForTopic(String tid) {
-        return repository.findWidgetsForTopic(tid);
+        return topicWidgetMap.get(tid);
     }
 
-    public int updateWidget(int wid, Widget widget) {
-        Widget originalWidget = repository.findById(wid).get();
-
-        originalWidget.setName(widget.getName());
-        originalWidget.setType(widget.getType());
-        originalWidget.setWidgetOrder(widget.getWidgetOrder());
-        originalWidget.setText(widget.getText());
-        originalWidget.setUrl(widget.getUrl());
-        originalWidget.setSize(widget.getSize());
-        originalWidget.setWidth(widget.getWidth());
-        originalWidget.setHeight(widget.getHeight());
-        originalWidget.setCssClass(widget.getCssClass());
-        originalWidget.setStyle(widget.getStyle());
-        originalWidget.setValue(widget.getValue());
-        originalWidget.setOrdered(widget.isOrdered());
-
-        repository.save(originalWidget);
-        return 1;
+    public int updateWidget(String wid, Widget widget) {
+        for (List<Widget> wList : topicWidgetMap.values()) {
+            for (Widget w : wList) {
+                if (w.getId().equals(wid)) {
+                    w = widget;
+                    return 1;
+                }
+            }
+        }
+        return 0;
     }
 
-    public int deleteWidget(int wid) {
-        repository.deleteById(wid);
-        return 1;
+    public int deleteWidget(String wid) {
+        for (List<Widget> wList : topicWidgetMap.values()) {
+            for (Widget w : wList) {
+                if (w.getId().equals(wid)) {
+                    wList.remove(w);
+                    return 1;
+                }
+            }
+        }
+        return 0;
     }
 }

@@ -28,14 +28,14 @@ public class WidgetController {
 
     @PutMapping("/api/widgets/{wid}")
     public int updateWidget(
-            @PathVariable("wid") int wid,
+            @PathVariable("wid") String wid,
             @RequestBody Widget widget) {
         return service.updateWidget(wid, widget);
     }
 
     @DeleteMapping("/api/widgets/{wid}")
     public int deleteWidget(
-            @PathVariable("wid") int wid) {
+            @PathVariable("wid") String wid) {
         return service.deleteWidget(wid);
     }
 }
